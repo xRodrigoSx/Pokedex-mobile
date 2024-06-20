@@ -1,6 +1,4 @@
-
-
-  export interface Pokemons {
+export interface Pokemons {
   abilities: Ability2[];
   base_experience: number;
   cries: Cries;
@@ -23,7 +21,7 @@
   weight: number;
 }
 
-interface Type {
+export interface Type {
   slot: number;
   type: Ability;
 }
@@ -222,4 +220,3 @@ interface Ability {
   name: string;
   url: string;
 }
-  

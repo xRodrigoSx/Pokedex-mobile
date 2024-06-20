@@ -7,8 +7,9 @@ import { HomeProps } from "../types/navigator";
 interface CardProps {
   item: Pokemons;
 }
+
 const Card: FC<CardProps> = ({ item }) => {
-  const { navigation } = useNavigation<HomeProps>();
+  const navigation = useNavigation();
 
   const goToDetails = () => {
     if (navigation) {
@@ -18,13 +19,40 @@ const Card: FC<CardProps> = ({ item }) => {
     }
   };
 
+  const typeColors: { [key: string]: string } = {
+    normal: "#A8A77A",
+    fire: "#EE8130",
+    water: "#6390F0",
+    electric: "#F7D02C",
+    grass: "#7AC74C",
+    ice: "#96D9D6",
+    fighting: "#C22E28",
+    poison: "#A33EA1",
+    ground: "#E2BF65",
+    flying: "#A98FF3",
+    psychic: "#F95587",
+    bug: "#A6B91A",
+    rock: "#B6A136",
+    ghost: "#735797",
+    dragon: "#6F35FC",
+    dark: "#705746",
+    steel: "#B7B7CE",
+    fairy: "#D685AD",
+  };
+  
+  const backgroundColor = typeColors[item.types[0].type.name] || "#FFFFFF";  
+
+  const pokeName = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.id}>{"#"+item.order}</Text>
-      <Image source={{ uri: item.sprites.back_default }} style={styles.avatar} />
-      <Text style={styles.title}>{item.name.toUpperCase()}</Text>
+    <View style={[styles.container, { backgroundColor }]}>
       <TouchableOpacity style={styles.button} onPress={goToDetails}>
-        <Text style={styles.buttonText}>Detalhes</Text>
+      <Text style={styles.id}>{"#" + item.id}</Text>
+      <Image source={{ uri: item.sprites.front_default }} style={styles.avatar} />
+      <Text style={styles.title}>{pokeName(item.name)}</Text>
+      <Text>{item.types.map((type) => type.type.name).join(" | ")}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -38,19 +66,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     marginVertical: 10,
-    backgroundColor: "#a1b2c3d4",
     marginHorizontal: 10,
     borderRadius: 5,
   },
   id: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#333",
+    backgroundColor: 'rgba(205,205,205, 0.8)',
+    borderRadius: 15,
+    paddingHorizontal: 6,
+    marginBottom: 5
   },
   avatar: {
     width: 80,
     height: 80,
     borderRadius: 50,
-    backgroundColor: "gray",
+    backgroundColor: 'rgba(205,205,205, 0.8)',
   },
   title: {
     fontSize: 16,
@@ -59,16 +90,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   button: {
-    marginVertical: 10,
-    width: "85%",
-    height: 30,
+    marginVertical: 0,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#252525",
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
+  }
 });

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, View } from "react-native";
+import { StyleSheet, Text, Image, View, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
@@ -8,7 +8,7 @@ const Details = () => {
   const route = useRoute<any>();
   const [pokemon, setPokemon] = useState<Pokemons | undefined>(undefined);
 
-  const pokemonId = route.params;
+  const pokemonId = route.params.id;
 
   React.useEffect(() => {
     if (pokemonId) {
@@ -23,33 +23,152 @@ const Details = () => {
       };
       fetchData();
     }
-  }, [pokemonId]); 
+  }, [pokemonId]);
 
-  if (!pokemon) return <Text>Loading...</Text>; 
+  if (!pokemon) return <Text>Loading...</Text>;
+
+  const capitalizeFirstLetter = (string: string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  };
+
+  const typeColors: { [key: string]: string } = {
+    normal: "#A8A77A",
+    fire: "#EE8130",
+    water: "#6390F0",
+    electric: "#F7D02C",
+    grass: "#7AC74C",
+    ice: "#96D9D6",
+    fighting: "#C22E28",
+    poison: "#A33EA1",
+    ground: "#E2BF65",
+    flying: "#A98FF3",
+    psychic: "#F95587",
+    bug: "#A6B91A",
+    rock: "#B6A136",
+    ghost: "#735797",
+    dragon: "#6F35FC",
+    dark: "#705746",
+    steel: "#B7B7CE",
+    fairy: "#D685AD",
+  };
+
+  const backgroundColor = typeColors[pokemon.types[0].type.name] || "#FFFFFF";
+
+  interface ProgressBarProps {
+    progress: number;
+    color: string;
+  }
+
+  const ProgressBar: React.FC<ProgressBarProps> = ({ progress, color }) => {
+    return (
+      <View style={styles.progressBarContainer}>
+        <View style={[styles.progressBar, { width: progress, backgroundColor: color }]} />
+      </View>
+    );
+  };
 
   return (
-    <View style={styles}>
-      <View style={styles}>
-        {pokemon.sprites?.front_default && (
-          <Image
-            style={styles}
-            source={{ uri: pokemon.sprites.front_default }}
-          />
-        )}
-        <Text>{pokemon.name}</Text>
+    <ScrollView contentContainerStyle={[styles.container, { backgroundColor }]}>
+      <View style={styles.head}>
+        <Text style={styles.name}>{capitalizeFirstLetter(pokemon.name)}</Text>
+        <Text style={styles.id}>#{pokemon.id}</Text>
       </View>
-      <Text style={styles}>#{pokemon.id}</Text>
-      {pokemon.types && (
-        <Text>Type: {pokemon.types.map((type) => type.type.name)}</Text>
-      )}
-      {pokemon.height && <Text>Height: {pokemon.height} cm</Text>}
-      {pokemon.weight && <Text>Weight: {pokemon.weight} hg</Text>}
-    </View>
+      <Text style={styles.types}>
+        {pokemon.types.map((type) => type.type.name).join(" | ")}
+      </Text>
+      <Image style={styles.avatar} source={{ uri: pokemon.sprites.front_default }} />
+      <View style={styles.info}>
+          <Text style={{color: "white", fontWeight: "bold"}}>Base stats</Text>
+        <View style={styles.stats}>
+          <View style={styles.stat}>
+          <Text>HP:</Text>
+            <Text>Attack:</Text>
+            <Text>Defense:</Text>
+            <Text>Sp. Attack:</Text>
+            <Text>Sp. Defense:</Text>
+            <Text>Speed:</Text>
+          </View>
+          <View style={styles.stat}>
+            <Text>{pokemon.stats[0].base_stat}</Text>
+            <Text>{pokemon.stats[1].base_stat}</Text>
+            <Text>{pokemon.stats[2].base_stat}</Text>
+            <Text>{pokemon.stats[3].base_stat}</Text>
+            <Text>{pokemon.stats[4].base_stat}</Text>
+            <Text>{pokemon.stats[5].base_stat}</Text>
+          </View>
+          <View style={styles.stat}>
+            <ProgressBar progress={pokemon.stats[0].base_stat / 2} color="#FF9A57" />
+            <ProgressBar progress={pokemon.stats[1].base_stat / 2} color="#FF9A57" />
+            <ProgressBar progress={pokemon.stats[2].base_stat / 2} color="#FF9A57" />
+            <ProgressBar progress={pokemon.stats[3].base_stat / 2} color="#FF9A57" />
+            <ProgressBar progress={pokemon.stats[4].base_stat / 2} color="#FF9A57" />
+            <ProgressBar progress={pokemon.stats[5].base_stat / 2} color="#FF9A57" />
+          </View>
+          
+        </View>
+
+        {pokemon.height && <Text style={styles.info}>Height: {pokemon.height / 10} m</Text>}
+        {pokemon.weight && <Text style={styles.info}>Weight: {pokemon.weight / 10} kg</Text>}
+      </View>
+    </ScrollView>
   );
 };
 
 export default Details;
 
 const styles = StyleSheet.create({
-  
+  container: {
+  },
+  head: {
+    marginHorizontal: 10,
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    flexDirection: "row",
+  },
+  id: {
+    fontSize: 24,
+  },
+  types: {
+    marginHorizontal: 15,
+    fontSize: 18,
+  },
+  avatar: {
+    alignSelf: "center",
+    width: 150,
+    height: 150,
+  },
+  name: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginTop: 10,
+    textTransform: "capitalize",
+  },
+  info: {
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: "purple",
+    fontSize: 16,
+    color: "white",
+    padding: 20,
+  },
+  stats: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  progressBarContainer: {
+    height: 10,
+    width: '100%',
+    backgroundColor: '#2B004A',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginBottom: 5,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#FF9A57',
+  },
+  stat: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
 });
