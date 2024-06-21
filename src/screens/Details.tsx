@@ -56,13 +56,12 @@ const Details = () => {
 
   interface ProgressBarProps {
     progress: number;
-    color: string;
   }
 
-  const ProgressBar: React.FC<ProgressBarProps> = ({ progress, color }) => {
+  const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
     return (
       <View style={styles.progressBarContainer}>
-        <View style={[styles.progressBar, { width: progress, backgroundColor: color }]} />
+        <View style={[styles.progressBar, { width: progress, backgroundColor: backgroundColor }]} />
       </View>
     );
   };
@@ -78,39 +77,49 @@ const Details = () => {
       </Text>
       <Image style={styles.avatar} source={{ uri: pokemon.sprites.front_default }} />
       <View style={styles.info}>
-          <Text style={{color: "white", fontWeight: "bold"}}>Base stats</Text>
+        <Text style={{ color: "white", fontWeight: "bold" }}>Base stats</Text>
         <View style={styles.stats}>
           <View style={styles.stat}>
-          <Text>HP:</Text>
-            <Text>Attack:</Text>
-            <Text>Defense:</Text>
-            <Text>Sp. Attack:</Text>
-            <Text>Sp. Defense:</Text>
-            <Text>Speed:</Text>
-          </View>
-          <View style={styles.stat}>
-            <Text>{pokemon.stats[0].base_stat}</Text>
-            <Text>{pokemon.stats[1].base_stat}</Text>
-            <Text>{pokemon.stats[2].base_stat}</Text>
-            <Text>{pokemon.stats[3].base_stat}</Text>
-            <Text>{pokemon.stats[4].base_stat}</Text>
-            <Text>{pokemon.stats[5].base_stat}</Text>
-          </View>
-          <View style={styles.stat}>
-            <ProgressBar progress={pokemon.stats[0].base_stat / 2} color="#FF9A57" />
-            <ProgressBar progress={pokemon.stats[1].base_stat / 2} color="#FF9A57" />
-            <ProgressBar progress={pokemon.stats[2].base_stat / 2} color="#FF9A57" />
-            <ProgressBar progress={pokemon.stats[3].base_stat / 2} color="#FF9A57" />
-            <ProgressBar progress={pokemon.stats[4].base_stat / 2} color="#FF9A57" />
-            <ProgressBar progress={pokemon.stats[5].base_stat / 2} color="#FF9A57" />
-          </View>
-          
-        </View>
+            <Text style={{ color: "white" }}>HP:</Text>
+            <Text style={{ color: "white" }}>Attack:</Text>
+            <Text style={{ color: "white" }}>Defense:</Text>
+            <Text style={{ color: "white" }}>Sp. Atk:</Text>
+            <Text style={{ color: "white" }}>Sp. Def:</Text>
+            <Text style={{ color: "white" }}>Speed:</Text>
+            <Text style={{ color: "cyan" }}>Total:</Text>
 
-        {pokemon.height && <Text style={styles.info}>Height: {pokemon.height / 10} m</Text>}
-        {pokemon.weight && <Text style={styles.info}>Weight: {pokemon.weight / 10} kg</Text>}
+          </View>
+          <View style={styles.stat}>
+            <Text style={{ color: "white" }}>{pokemon.stats[0].base_stat}</Text>
+            <Text style={{ color: "white" }}>{pokemon.stats[1].base_stat}</Text>
+            <Text style={{ color: "white" }}>{pokemon.stats[2].base_stat}</Text>
+            <Text style={{ color: "white" }}>{pokemon.stats[3].base_stat}</Text>
+            <Text style={{ color: "white" }}>{pokemon.stats[4].base_stat}</Text>
+            <Text style={{ color: "white" }}>{pokemon.stats[5].base_stat}</Text>
+            <Text style={{ color: "cyan" }}>{pokemon.stats[0].base_stat + pokemon.stats[1].base_stat + pokemon.stats[2].base_stat + pokemon.stats[3].base_stat + pokemon.stats[4].base_stat + pokemon.stats[5].base_stat}</Text>
+          </View>
+          <View style={styles.stat}>
+            <ProgressBar progress={pokemon.stats[0].base_stat / 2} />
+            <ProgressBar progress={pokemon.stats[1].base_stat / 2} />
+            <ProgressBar progress={pokemon.stats[2].base_stat / 2} />
+            <ProgressBar progress={pokemon.stats[3].base_stat / 2} />
+            <ProgressBar progress={pokemon.stats[4].base_stat / 2} />
+            <ProgressBar progress={pokemon.stats[5].base_stat / 2} />
+            <ProgressBar progress={(pokemon.stats[0].base_stat +
+              pokemon.stats[1].base_stat +
+              pokemon.stats[2].base_stat +
+              pokemon.stats[3].base_stat +
+              pokemon.stats[4].base_stat +
+              pokemon.stats[5].base_stat) / 12} />
+          </View>
+
+        </View>
+        <View style={styles.statistic}>
+          <Text>Weight: {pokemon.weight / 10} kg</Text>
+          <Text>Height: {pokemon.height / 10} m</Text>
+        </View>
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 };
 
@@ -157,18 +166,31 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     height: 10,
-    width: '100%',
+    width: "140%",
     backgroundColor: '#2B004A',
     borderRadius: 5,
     overflow: 'hidden',
     marginBottom: 5,
+    marginLeft: -50
   },
   progressBar: {
     height: '100%',
     backgroundColor: '#FF9A57',
+    borderRadius: 5,
   },
   stat: {
+    marginTop: 10,
+    gap: 4,
     flex: 1,
     justifyContent: "space-between",
   },
+  statistic: {
+    borderRadius: 15,
+    flexDirection: "row",
+    backgroundColor: "lightblue",
+    justifyContent: "center",
+    paddingVertical: 20,
+    marginVertical: 20,
+    gap: 40,
+  }
 });
