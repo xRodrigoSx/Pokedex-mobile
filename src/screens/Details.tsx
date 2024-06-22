@@ -73,20 +73,20 @@ const Details = () => {
         <Text style={styles.id}>#{pokemon.id}</Text>
       </View>
       <Text style={styles.types}>
-        {pokemon.types.map((type) => type.type.name).join(" | ")}
+        {pokemon.types.map((type) => capitalizeFirstLetter(type.type.name)).join(" | ")}
       </Text>
       <Image style={styles.avatar} source={{ uri: pokemon.sprites.front_default }} />
       <View style={styles.info}>
-        <Text style={{ color: "white", fontWeight: "bold" }}>Base stats</Text>
+        <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>Base stats</Text>
         <View style={styles.stats}>
           <View style={styles.stat}>
-            <Text style={{ color: "white" }}>HP:</Text>
-            <Text style={{ color: "white" }}>Attack:</Text>
-            <Text style={{ color: "white" }}>Defense:</Text>
-            <Text style={{ color: "white" }}>Sp. Atk:</Text>
-            <Text style={{ color: "white" }}>Sp. Def:</Text>
-            <Text style={{ color: "white" }}>Speed:</Text>
-            <Text style={{ color: "cyan" }}>Total:</Text>
+            <Text style={{ color: "white" , fontSize: 13}}>HP:</Text>
+            <Text style={{ color: "white" , fontSize: 13}}>Attack:</Text>
+            <Text style={{ color: "white" , fontSize: 13}}>Defense:</Text>
+            <Text style={{ color: "white" , fontSize: 13}}>Sp. Atk:</Text>
+            <Text style={{ color: "white" , fontSize: 13}}>Sp. Def:</Text>
+            <Text style={{ color: "white" , fontSize: 13}}>Speed:</Text>
+            <Text style={{ color: "cyan" , fontSize: 13}}>Total:</Text>
 
           </View>
           <View style={styles.stat}>
@@ -96,7 +96,7 @@ const Details = () => {
             <Text style={{ color: "white" }}>{pokemon.stats[3].base_stat}</Text>
             <Text style={{ color: "white" }}>{pokemon.stats[4].base_stat}</Text>
             <Text style={{ color: "white" }}>{pokemon.stats[5].base_stat}</Text>
-            <Text style={{ color: "cyan" }}>{pokemon.stats[0].base_stat + pokemon.stats[1].base_stat + pokemon.stats[2].base_stat + pokemon.stats[3].base_stat + pokemon.stats[4].base_stat + pokemon.stats[5].base_stat}</Text>
+            <Text style={{ color: "cyan" , fontWeight: "bold"}}>{pokemon.stats[0].base_stat + pokemon.stats[1].base_stat + pokemon.stats[2].base_stat + pokemon.stats[3].base_stat + pokemon.stats[4].base_stat + pokemon.stats[5].base_stat}</Text>
           </View>
           <View style={styles.stat}>
             <ProgressBar progress={pokemon.stats[0].base_stat / 2} />
@@ -134,23 +134,27 @@ const styles = StyleSheet.create({
     alignItems: "baseline",
     flexDirection: "row",
   },
-  id: {
-    fontSize: 24,
-  },
-  types: {
-    marginHorizontal: 15,
-    fontSize: 18,
-  },
-  avatar: {
-    alignSelf: "center",
-    width: 150,
-    height: 150,
-  },
   name: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     marginTop: 10,
     textTransform: "capitalize",
+    color: "white"
+  },
+  id: {
+    fontSize: 20,
+    color: "white"
+  },
+  types: {
+    marginHorizontal: 15,
+    fontSize: 15,
+    color: "white"
+  },
+  avatar: {
+    alignSelf: "center",
+    width: 180,
+    height: 180,
+    marginBottom: 10
   },
   info: {
     borderTopLeftRadius: 40,

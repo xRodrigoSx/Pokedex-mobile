@@ -9,7 +9,7 @@ interface CardProps {
 }
 
 const Card: FC<CardProps> = ({ item }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const goToDetails = () => {
     if (navigation) {
@@ -52,7 +52,7 @@ const Card: FC<CardProps> = ({ item }) => {
       <Text style={styles.id}>{"#" + item.id}</Text>
       <Image source={{ uri: item.sprites.front_default }} style={styles.avatar} />
       <Text style={styles.title}>{pokeName(item.name)}</Text>
-      <Text>{item.types.map((type) => type.type.name).join(" | ")}</Text>
+      <Text>{item.types.map((type) => pokeName(type.type.name)).join(" | ")}</Text>
       </TouchableOpacity>
     </View>
   );
